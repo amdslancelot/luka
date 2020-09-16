@@ -47,17 +47,17 @@
     },
 
     "loggers": {
-        "Luka API Request": {
+        "Request": {
+            "level": "INFO",
+            "handlers": ["info_file_handler", "debug_file_handler", "error_file_handler"],
+            "propagate": "no"
+        },
+        "Utils": {
             "level": "ERROR",
             "handlers": ["info_file_handler", "debug_file_handler", "error_file_handler"],
             "propagate": "no"
         },
-        "Luka Utils": {
-            "level": "ERROR",
-            "handlers": ["info_file_handler", "debug_file_handler", "error_file_handler"],
-            "propagate": "no"
-        },
-	    "Luka Config Reader": {
+	    "Config Reader": {
             "level": "ERROR",
             "handlers": ["info_file_handler", "debug_file_handler", "error_file_handler"],
             "propagate": "no"

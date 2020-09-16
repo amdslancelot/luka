@@ -5,9 +5,8 @@ import logging
 import requests
 import luka.bash_config_reader as config_reader
 #import luka.json_byteify as json_byteify
-import luka.custom_log as mylog
-import luka.utils as utils
-import config
+import luka.log as mylog
+import luka.printer as printer
 
 class APIRequest(object):
     """ 
@@ -215,7 +214,7 @@ class APIRequest(object):
         if not r:
             self.logger.error("%s - response, r: %s" % (req_type, r))
             self.logger.error("%s - response, status code: %s" % (req_type, r.status_code))
-            utils.print_common_error(r)
+            printer.print_text_error(r)
             return None
         self.logger.debug("%s - response=%s" % (req_type, r.content))
 
@@ -225,7 +224,7 @@ class APIRequest(object):
             self.logger.error("%s - Do not recognize response format!" % (req_type))
             self.logger.error("%s - response=%s" % (req_type, r.content))
             self.logger.error("%s - payload=%s" % (req_type, payload))
-            utils.print_common_error(r.content)
+            printer.print_text_error(r.content)
             return None
 
         # API request successful but task failed
@@ -258,7 +257,7 @@ class APIRequest(object):
         """ If API request successful but task failed """
 
         if ("error_code" in r_json and r_json["error_code"] != 1):
-            utils.print_common_error(r.content)
+            printer.print_text_error(r.content)
             return False
         return True
 

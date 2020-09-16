@@ -23,7 +23,11 @@ def get_logger(logger_name, desired_log_path=dir_path, log_config_path=dir_path+
 
         logging.config.dictConfig(config)
         #print "log config", path, "loadded!"
+        logger = logging.getLogger("Luka Log")
+        logger.info("Luka Logger loaded. logger_name: " + logger_name + ", desired_log_path: " + desired_log_path + ", log_config_path: " + log_config_path)
     else:
         logging.basicConfig(level=default_level)
         print("Luka is using basic log config")
-    return logging.getLogger(logger_name)
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(default_level)
+    return logger

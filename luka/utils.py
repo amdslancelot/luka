@@ -1,42 +1,44 @@
 import re
-import pprint
-import logging
-import json
-import luka.custom_log as mylog
 
-""" logging """
-logger = mylog.get_logger("Luka Utils")
+def get_pname_and_else(s):
+    '''
+    return (<PACKAGE_NAME>, <VERSION>, <RELEASE>, <OS_VERSION>, <PLATFORM>)
+    '''
+    pname = None
+    version = None
+    release = None
+    os_ver = None
+    platform = None
 
-# pprint
-pp = pprint.PrettyPrinter(indent=4)
+    match = re.search(r"\-[0-9]", s)
+    if not match:
+        return (pname, version, release, os_ver, platform)
+    pname = s[:match.start()].lower()
+    rest = s[match.start()+1:]
 
+    match = re.search(r"\-[0-9]", rest)
+    if not match:
+        version = rest
+        return (pname, version, release, os_ver, platform)
+    version = rest[:match.start()].lower()
+    rest = rest[match.start()+1:]
 
+    match = re.search(r"\.[a-zA-Z]", rest)
+    if not match:
+        release = rest
+        return (pname, version, release, os_ver, platform)
+    release = rest[:match.start()].lower()
+    rest = rest[match.start()+1:]
 
-def append_url(url_str1, url_str2):
-    return url_str1 + "/" + url_str2
+    match = re.search(r"\.[a-zA-Z]", rest)
+    if not match:
+        os_ver = rest
+        return (pname, version, release, os_ver, platform)
+    os_ver = rest[:match.start()].lower()
+    platform = rest[match.start()+1:].lower()
+    if ".rpm" in platform:
+        platform.replace(".rpm", "")
+    if ".src.rpm" in platform:
+        platform.replace(".src.rpm", "")
 
-
-# Printer
-def print_error(args, msg="Unknown error"):
-    """ Use this function to print all error msgs """
-
-    logger.error(args)
-    logger.error(msg)
-    print("[ERROR]", msg)
-
-
-def print_common_error(msg):
-    print("[ERROR]", msg)
-
-
-def print_result(r, pp=True):
-    """ Use this function to print all results """
-
-    if r is None:
-        print("[ERROR]", "request failed.")
-    else:
-        logger.info("result: %s" % (pp.pformat(json.dumps(r))))
-        if pp:
-            print(json.dumps(r, indent=4))
-        else:
-            print(pp.pformat(json.dumps(r)))
+    return (pname, version, release, os_ver, platform)

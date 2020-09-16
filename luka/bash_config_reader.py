@@ -2,8 +2,8 @@
 Bash Config Reader
 """
 import logging
-import luka.utils as utils
-import luka.custom_log as mylog
+import luka.printer as printer
+import luka.log as mylog
 logger = mylog.get_logger("Luka Config Reader")
 
 def read_bash_config(fname):
@@ -29,6 +29,6 @@ def read_bash_config(fname):
     except:
         err_msg = "Failed to open file: %s. Please check if oauth file exists" % (fname)
         logger.error(err_msg)
-        utils.print_common_error(err_msg)
+        printer.print_text_error(err_msg)
         exit(0)
     return config
